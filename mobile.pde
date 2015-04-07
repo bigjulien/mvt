@@ -50,6 +50,7 @@ class LinearTrajectoire
 
 
 class CircleMovement { 
+  PrintWriter output;
   int rad;        // Width of the shape
   float xpos, ypos;    // Starting position of shape
   float angularSpeed;
@@ -58,8 +59,7 @@ class CircleMovement {
   float r;
   int decalageX;
   int decalageY;
-  String[] list ;
-  String words="";
+
 
   CircleMovement(int rad, float angularSpeed, float teta0, float r, int decalageX, int decalageY) {
     this.rad = rad;
@@ -68,12 +68,13 @@ class CircleMovement {
     this.r = r;
     this.decalageX = decalageX;
     this.decalageY = decalageY;
-    
+    output = createWriter("angles.csv"); 
+    output.println("t;;angle;anglebruit;posx;posy");  
   }
 
   void move() {
     // Update the position of the shape
-    t=t+5;
+    t=t+1;
     xpos = decalageX + r*cos(angularSpeed*t + teta0);
     ypos = decalageY + r*sin(angularSpeed*t + teta0);
     latc =xpos;
@@ -82,12 +83,9 @@ class CircleMovement {
     float mesurebruitee = mesure+randomGaussian()*0.05;
     println("Mesure réele: "+mesure);
     println("Mesure bruitée: "+mesurebruitee);    
-    println();
-   
-    words += mesurebruitee+" ";
-    saveStrings("yolo.txt",mesurebruitee); 
-    
-    
+    println();   
+    output.println(t+";;"+mesure+";"+mesurebruitee+";"+xpos+";"+ypos);   
+    output.flush();
   }
 
   void display()
